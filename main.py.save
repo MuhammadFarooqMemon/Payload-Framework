@@ -1,0 +1,71 @@
+import argparse
+from modules import xss, sqli, cmdi
+from utils import encoder, exporter
+
+
+def main():
+
+    parser = argparse.ArgumentParser(
+        description="Educational Payload Generation Framework"
+    )
+
+    # Module selection
+    parser.add_argument(
+        "--module",
+        required=True,
+        choices=["xss", "sqli", "cmdi"],
+        help="Select payload module"
+    )
+
+    # Encoding option
+    parser.add_argument(
+        "--encode",
+        choices=["url", "base64", "hex"],
+    )
+
+    # Database selection (for SQLi)
+    parser.add_argument(
+        "--db",
+        choices=["mysql", "postgres", "mssql"],
+        help="Select database type (SQLi only)"
+    )
+
+    # Output format
+    parser.add_argument(
+        "--output",
+        choices=["json", "txt"],
+        help="Export payloads to file"
+    )
+
+    args = parser.parse_args()
+
+    payloads = []
+
+    # Module routing
+    if args.module == "xss":
+        payloads = xss.generate()
+
+    elif args.module == "sqli":
+        payloads = sqli.generate(args.db)
+
+    elif args.module == "cmdi":
+        payloads = cmdi.generate()
+
+    # Apply encoding if selected
+    if args.encode:
+        payloads = [
+            encoder.apply_encoding(p, args.encode)
+            for p in payloads
+        ]
+
+    # Export or print
+    if args.output:
+        exporter.export(payloads, args.output)
+    else:
+        print("\nGenerated Payloads:\n")
+        for p in payloads:
+            print(p)
+
+
+if __name__ == "__main__":
+    main()
