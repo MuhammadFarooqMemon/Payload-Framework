@@ -155,10 +155,8 @@ Interactive CLI mode
 
 Logging system
 
-Author
-
-Farooq Memon
-
+Presentation Link:
+https://gamma.app/docs/Offensive-Security-Tool-Development-Payload-Generation-Framework-t2mnk921c20shyj?mode=doc
 Disclaimer
 
 This tool is intended for educational purposes and authorized security testing only.
